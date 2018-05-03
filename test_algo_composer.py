@@ -3,6 +3,7 @@ from algo.core.algorithm import Algorithm
 from algo.graph_walker import GraphWalker
 from algo.train.algo_composer import AlgoComposer
 from algo.train.estimator import Estimator
+from algo.build.algo_builder import AlgoBuilder
 from brain.brain import Brain
 from onto.builder import OntoBuilder
 from onto.builder2 import OntoBuilder2
@@ -26,7 +27,9 @@ def main():
 
     brain = Brain(onto_container=onto_container, algo_container=algo_container)
     estimator = Estimator(brain)
-    algo_composer = AlgoComposer(brain=brain, estimator=estimator)
+
+    algo_builder = AlgoBuilder(brain)
+    algo_builder.build_from('data/algo_base.txt')
 
     # input = 'do people in a slavic speaking country speak english?'
     input = 'do people in a USA speak english?'
@@ -37,10 +40,6 @@ def main():
     result = graph_walker.resolve(input)
     print(result)
     exit()
-
-    algorithm = algo_composer.compose(input, 'right')
-    if algorithm:
-        algorithm.save('algo/patterns/composed.json')
 
 
 if __name__ == '__main__':

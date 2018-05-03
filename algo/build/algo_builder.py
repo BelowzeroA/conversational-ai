@@ -11,7 +11,7 @@ class AlgoBuilder:
         current_query = ''
         with open(filename, 'r', encoding='utf-8') as file:
             for line in file:
-                if line.startswith('\t'):
+                if line.startswith(' '):
                     self.queries[current_query].append(line.strip())
                 else:
                     current_query = line
@@ -30,5 +30,5 @@ class AlgoBuilder:
             print(self._serialize(out_val), file=output_file)
 
 
-    def build(self, filename):
+    def build_from(self, filename):
         self.load_from_file(filename)

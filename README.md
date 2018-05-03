@@ -1,4 +1,4 @@
-# Research project in conversational AGI field.
+# Research project in conversational AGI field
 
 
 A question-answering system based on the human brain mimicking

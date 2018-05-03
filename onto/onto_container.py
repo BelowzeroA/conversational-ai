@@ -142,37 +142,6 @@ class OntoContainer:
         return weight
 
 
-    def find_common_targets_of_type(self, source_nodes, _type):
-        descendants = {}
-        for node in source_nodes:
-            node_id = node["id"]
-            descendants[node_id] = []  # set()
-            # weight = 0
-            for conn in node["connections"]:
-                target_node = self.find_node_by_id(conn["target"])
-                if target_node and target_node["type"] == _type:
-                    weight = conn["sign"]
-                    descendants[node_id].append({"node_id": target_node["id"], "weight": weight})
-
-        target_sets = []
-        for target_list in descendants.values():
-            target_sets.append([target["node_id"] for target in target_list])
-
-        if len(target_sets) < 2:
-            return []
-
-        intersection = set(target_sets[0]).intersection(*target_sets[1:])
-        if not intersection:
-            return []
-        else:
-            # return [self.find_node_by_id(node_id) for node_id in intersection]
-            result = []
-            for target_id in intersection:
-                weight = self.sum_input_weigths(descendants, target_id)
-                result.append({ "node": target_id, "weight": weight})
-            return result
-
-
     def sort_nodes_by_id(self):
         for node in self.nodes:
             node.numeric_id = int(node.node_id)
