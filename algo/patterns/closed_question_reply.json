@@ -1,0 +1,42 @@
+{
+  "start_node": 1,
+  "nodes": [
+    {
+      "id": "1",
+      "type": "writer",
+      "value": "context"
+    },
+    {
+      "id": "2",
+      "type": "call",
+      "algo": "switch_context"
+    },
+    {
+      "id": "3",
+      "type": "call",
+      "algo": "get_reply_what"
+    },
+    {
+      "id": "4",
+      "type": "compare"
+    },
+    {
+      "id": "5",
+      "type": "exit"
+    }
+  ],
+  "connections": [
+    {
+      "source": "1",
+      "target": "2"
+    },
+    {
+      "source": "2",
+      "target": "3"
+    },
+    {
+      "source": "3",
+      "target": "4"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "nodes": [
+    {
+      "id": "1",
+      "type": "signaller",
+      "source": "stack"
+    },
+    {
+      "id": "2",
+      "type": "listener",
+      "filter": "concrete"
+    },
+    {
+      "id": "3",
+      "type": "writer"
+    },
+    {
+      "id": "4",
+      "type": "exit"
+    }
+  ],
+  "connections": [
+    {
+      "source": "2",
+      "target": "3"
+    },
+    {
+      "source": "3",
+      "target": "4"
+    }
+  ]
+}

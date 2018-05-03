@@ -1,0 +1,22 @@
+{
+  "waiting": 20,
+  "reply_type": "yes",
+  "nodes": [
+    {
+      "id": "1",
+      "type": "listener",
+      "num_cells": 1,
+      "is": "context"
+    },
+    {
+      "id": "2",
+      "type": "exit"
+    }
+  ],
+  "connections": [
+    {
+      "source": "1",
+      "target": "2"
+    }
+  ]
+}

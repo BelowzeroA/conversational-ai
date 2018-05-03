@@ -1,0 +1,352 @@
+{
+  "nodes": [
+    {
+      "id": "1",
+      "patterns": [
+        "USA"
+      ],
+      "abstract": false,
+      "knowledge_center": false
+    },
+    {
+      "id": "2",
+      "patterns": [
+        "country"
+      ],
+      "abstract": false,
+      "knowledge_center": false
+    },
+    {
+      "id": "3",
+      "patterns": [
+        "Russia"
+      ],
+      "abstract": false,
+      "knowledge_center": false
+    },
+    {
+      "id": "4",
+      "patterns": [
+        "Poland"
+      ],
+      "abstract": false,
+      "knowledge_center": false
+    },
+    {
+      "id": "5",
+      "patterns": [
+        "UK"
+      ],
+      "abstract": false,
+      "knowledge_center": false
+    },
+    {
+      "id": "6",
+      "patterns": [
+        "english"
+      ],
+      "abstract": false,
+      "knowledge_center": false
+    },
+    {
+      "id": "7",
+      "patterns": [
+        "language"
+      ],
+      "abstract": false,
+      "knowledge_center": false
+    },
+    {
+      "id": "8",
+      "patterns": [
+        "russian"
+      ],
+      "abstract": false,
+      "knowledge_center": false
+    },
+    {
+      "id": "9",
+      "patterns": [
+        "polish"
+      ],
+      "abstract": false,
+      "knowledge_center": false
+    },
+    {
+      "id": "10",
+      "patterns": [
+        "people"
+      ],
+      "abstract": false,
+      "knowledge_center": false
+    },
+    {
+      "id": "11",
+      "patterns": [
+        "speak"
+      ],
+      "abstract": false,
+      "knowledge_center": false
+    },
+    {
+      "id": "12",
+      "patterns": [
+        "people speak"
+      ],
+      "abstract": true,
+      "knowledge_center": false
+    },
+    {
+      "id": "13",
+      "patterns": [
+        "english people speak"
+      ],
+      "abstract": true,
+      "knowledge_center": false
+    },
+    {
+      "id": "14",
+      "patterns": [
+        "fact 1"
+      ],
+      "abstract": true,
+      "knowledge_center": true
+    },
+    {
+      "id": "15",
+      "patterns": [
+        "fact 2"
+      ],
+      "abstract": true,
+      "knowledge_center": true
+    },
+    {
+      "id": "16",
+      "patterns": [
+        "fact 3"
+      ],
+      "abstract": true,
+      "knowledge_center": true
+    },
+    {
+      "id": "17",
+      "patterns": [
+        "fact 4"
+      ],
+      "abstract": true,
+      "knowledge_center": true
+    }
+  ],
+  "connections": [
+    {
+      "source": "1",
+      "target": "2",
+      "weight": 0.25
+    },
+    {
+      "source": "2",
+      "target": "1",
+      "weight": 0.25
+    },
+    {
+      "source": "3",
+      "target": "2",
+      "weight": 0.25
+    },
+    {
+      "source": "2",
+      "target": "3",
+      "weight": 0.25
+    },
+    {
+      "source": "4",
+      "target": "2",
+      "weight": 0.25
+    },
+    {
+      "source": "2",
+      "target": "4",
+      "weight": 0.25
+    },
+    {
+      "source": "5",
+      "target": "2",
+      "weight": 0.25
+    },
+    {
+      "source": "2",
+      "target": "5",
+      "weight": 0.25
+    },
+    {
+      "source": "6",
+      "target": "7",
+      "weight": 0.25
+    },
+    {
+      "source": "7",
+      "target": "6",
+      "weight": 0.25
+    },
+    {
+      "source": "8",
+      "target": "7",
+      "weight": 0.25
+    },
+    {
+      "source": "7",
+      "target": "8",
+      "weight": 0.25
+    },
+    {
+      "source": "9",
+      "target": "7",
+      "weight": 0.25
+    },
+    {
+      "source": "7",
+      "target": "9",
+      "weight": 0.25
+    },
+    {
+      "source": "10",
+      "target": "12",
+      "weight": 1.0
+    },
+    {
+      "source": "12",
+      "target": "10",
+      "weight": 1.0
+    },
+    {
+      "source": "11",
+      "target": "12",
+      "weight": 1.0
+    },
+    {
+      "source": "12",
+      "target": "11",
+      "weight": 1.0
+    },
+    {
+      "source": "6",
+      "target": "13",
+      "weight": 0.5
+    },
+    {
+      "source": "13",
+      "target": "6",
+      "weight": 0.5
+    },
+    {
+      "source": "12",
+      "target": "13",
+      "weight": 0.5
+    },
+    {
+      "source": "13",
+      "target": "12",
+      "weight": 0.5
+    },
+    {
+      "source": "14",
+      "target": "4",
+      "weight": 0.25
+    },
+    {
+      "source": "4",
+      "target": "14",
+      "weight": 0.25
+    },
+    {
+      "source": "14",
+      "target": "12",
+      "weight": 0.25
+    },
+    {
+      "source": "12",
+      "target": "14",
+      "weight": 0.25
+    },
+    {
+      "source": "14",
+      "target": "9",
+      "weight": 0.25
+    },
+    {
+      "source": "9",
+      "target": "14",
+      "weight": 0.25
+    },
+    {
+      "source": "15",
+      "target": "3",
+      "weight": 0.25
+    },
+    {
+      "source": "3",
+      "target": "15",
+      "weight": 0.25
+    },
+    {
+      "source": "15",
+      "target": "12",
+      "weight": 0.25
+    },
+    {
+      "source": "12",
+      "target": "15",
+      "weight": 0.25
+    },
+    {
+      "source": "15",
+      "target": "8",
+      "weight": 0.25
+    },
+    {
+      "source": "8",
+      "target": "15",
+      "weight": 0.25
+    },
+    {
+      "source": "16",
+      "target": "5",
+      "weight": 0.25
+    },
+    {
+      "source": "5",
+      "target": "16",
+      "weight": 0.25
+    },
+    {
+      "source": "16",
+      "target": "13",
+      "weight": 0.25
+    },
+    {
+      "source": "13",
+      "target": "16",
+      "weight": 0.25
+    },
+    {
+      "source": "17",
+      "target": "1",
+      "weight": 0.25
+    },
+    {
+      "source": "1",
+      "target": "17",
+      "weight": 0.25
+    },
+    {
+      "source": "17",
+      "target": "13",
+      "weight": 0.25
+    },
+    {
+      "source": "13",
+      "target": "17",
+      "weight": 0.25
+    }
+  ]
+}

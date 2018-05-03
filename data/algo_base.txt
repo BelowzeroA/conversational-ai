@@ -1,0 +1,4 @@
+do people in USA speak russian?
+    store context
+    what language do people speak in USA?
+    compare

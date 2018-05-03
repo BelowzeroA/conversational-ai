@@ -1,0 +1,58 @@
+{
+  "waiting": 25,
+  "initial_potential_period": 3,
+  "reply_type": "ambiguity",
+  "nodes": [
+    {
+      "id": "1",
+      "type": "listener",
+      "filter": "abstract",
+      "num_cells": 2,
+      "connected_with": "direction"
+    },
+    {
+      "id": "2",
+      "type": "writer",
+      "num_cells": 2
+    },
+    {
+      "id": "3",
+      "type": "listener",
+      "filter": "concrete",
+      "num_cells": 2,
+      "connected_with": "context"
+    },
+    {
+      "id": "4",
+      "type": "signaller",
+      "source": "stack",
+      "num_cells": 2
+    },
+    {
+      "id": "5",
+      "type": "listener",
+      "filter": "concrete",
+      "num_cells": 2,
+      "connected_with": "not context",
+      "previously_unseen": true
+    },
+    {
+      "id": "6",
+      "type": "exit"
+    }
+  ],
+  "connections": [
+    {
+      "source": "1",
+      "target": "2"
+    },
+    {
+      "source": "3",
+      "target": "4"
+    },
+    {
+      "source": "5",
+      "target": "6"
+    }
+  ]
+}

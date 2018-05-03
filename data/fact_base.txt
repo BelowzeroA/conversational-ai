@@ -1,0 +1,20 @@
+USA is country
+Russia is country
+Poland is country
+UK is country
+english is language
+russian is language
+polish is language
+#USA is a country with right-hand traffic
+#UK is a country with left-hand traffic
+#To cross the street in a country with left-hand traffic, check your right side
+#To cross the street in a country with right-hand traffic, check your left side
+#To cross the street in UK, check your right side
+#To cross the street in USA, check your left side
+#UK is an english speaking country
+#Poland is a slavic speaking country
+#Russia is a slavic speaking country
+in Poland people speak polish
+in Russia people speak russian
+in UK people speak english
+in USA people speak english

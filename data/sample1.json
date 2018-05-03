@@ -1,0 +1,149 @@
+{
+  "nodes": [
+    {
+      "id": "1",
+      "patterns": [ "cross street" ],
+      "abstract": true
+    },
+    {
+      "id": "2",
+      "patterns": [ "US" ]
+    },
+    {
+      "id": "3",
+      "patterns": [ "UK" ]
+    },
+    {
+      "id": "4",
+      "patterns": [ "check right side" ],
+      "abstract": true
+    },
+    {
+      "id": "5",
+      "patterns": [ "check left side" ],
+      "abstract": true
+    },
+    {
+      "id": "6",
+      "patterns": [ "right" ],
+      "abstract": false
+    },
+    {
+      "id": "7",
+      "patterns": [ "left" ],
+      "abstract": false
+    },
+    {
+      "id": "8",
+      "patterns": [ "check side" ],
+      "abstract": true
+    },
+    {
+      "id": "9",
+      "patterns": [ "side" ],
+      "abstract": true
+    },
+    {
+      "id": "10",
+      "patterns": [ "country" ],
+      "abstract": false
+    },
+    {
+      "id": "11",
+      "patterns": [ "check" ],
+      "abstract": false
+    }
+  ],
+  "connections": [
+    {
+      "sign": 1,
+      "source": "1",
+      "target": "4"
+    },
+    {
+      "sign": 1,
+      "source": "1",
+      "target": "5"
+    },
+    {
+      "sign": 1,
+      "source": "3",
+      "target": "4"
+    },
+    {
+      "sign": 1,
+      "source": "4",
+      "target": "3"
+    },
+    {
+      "sign": 1,
+      "source": "2",
+      "target": "5"
+    },
+    {
+      "sign": 1,
+      "source": "5",
+      "target": "2"
+    },
+    {
+      "sign": 1,
+      "source": "6",
+      "target": "4"
+    },
+    {
+      "sign": 1,
+      "source": "4",
+      "target": "6"
+    },
+    {
+      "sign": 1,
+      "source": "8",
+      "target": "5"
+    },
+    {
+      "sign": 1,
+      "source": "8",
+      "target": "4"
+    },
+    {
+      "sign": 1,
+      "source": "11",
+      "target": "8"
+    },
+    {
+      "sign": 1,
+      "source": "9",
+      "target": "7"
+    },
+    {
+      "sign": 1,
+      "source": "9",
+      "target": "8"
+    },
+    {
+      "sign": 1,
+      "source": "9",
+      "target": "6"
+    },
+    {
+      "sign": 1,
+      "source": "5",
+      "target": "7"
+    },
+    {
+      "sign": 1,
+      "source": "4",
+      "target": "6"
+    },
+    {
+      "sign": 1,
+      "source": "2",
+      "target": "10"
+    },
+    {
+      "sign": 1,
+      "source": "3",
+      "target": "10"
+    }
+  ]
+}
