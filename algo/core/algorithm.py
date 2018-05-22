@@ -2,13 +2,13 @@ import ntpath
 import os
 
 from algo.core.op_container import OperationContainer
+from onto.onto_graph_walker import OntoGraphWalker
 from onto.node import Node
 
 
 class Algorithm:
 
     def __init__(self, onto_container, filename=None):
-        self.algo_id = id
         self.container = OperationContainer(onto_container=onto_container, algorithm=self)
         if filename:
             self.container.load(filename)
@@ -19,23 +19,34 @@ class Algorithm:
         self.time_exceeded = False
         self.start_tick = 0
         self.current_tick = 0
-        self.wait_ticks = self.container.entries['waiting']
-        self.reply_type = self.container.entries['reply_type']
-        self.initial_potential_period = self.container.entries['initial_potential_period'] \
-            if 'initial_potential_period' in self.container.entries else Node.initial_potential_period
+        self.wait_ticks = self.read_property('waiting', 0)
+        self.reply_type = self.read_property('reply_type', None)
+        self.initial_potential_period = self.read_property('initial_potential_period', Node.initial_potential_period)
         self.next = None
+        self.switching_to = None
+        self.callback = None
+        self.onto_processing_needed = False
+        self.graph_walker = OntoGraphWalker(self.onto_container.brain, self)
+
+
+    def read_property(self, property_name, default_value):
+        if property_name in self.container.entries:
+            return self.container.entries[property_name]
+        else:
+            return default_value
 
 
     def start(self, tick):
         self.start_tick = tick
         self.current_tick = tick
         self.active = True
+        self.container.operations[0].fire()
 
 
     def update(self, tick):
         if self.active:
             self.current_tick = tick
-            if self.current_tick - self.start_tick >= self.wait_ticks:
+            if self.current_tick - self.start_tick >= self.wait_ticks and self.wait_ticks:
                 self.time_exceeded = True
                 self.active = False
                 return
@@ -44,6 +55,13 @@ class Algorithm:
                 op.update()
             for conn in self.container.connections:
                 conn.update()
+
+            if self.switching_to and self.callback:
+                self.active = False
+                self.callback(self.switching_to)
+
+            if self.onto_processing_needed:
+                self.graph_walker.make_step(self.current_tick)
 
 
     def init_onto_nodes(self):

@@ -1,14 +1,17 @@
 {
+  "start_node": 1,
   "nodes": [
     {
       "id": "1",
       "type": "signaller",
-      "source": "stack"
+      "source": "stack",
+      "num_cells": 1
     },
     {
       "id": "2",
       "type": "listener",
-      "filter": "concrete"
+      "filter": "concrete",
+      "num_cells": 1
     },
     {
       "id": "3",

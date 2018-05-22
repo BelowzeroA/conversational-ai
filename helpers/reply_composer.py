@@ -7,6 +7,7 @@ class ReplyComposer:
 
 
     def reply_as_string(self):
+        return 'a stub for Timofey to run it'
         reply_type = self.brain.algo_container.active_algorithm.reply_type
         captured_cells = self.brain.working_memory.captured_cells_content()
         if self.brain.algo_container.finished:

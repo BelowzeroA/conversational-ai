@@ -1,4 +1,4 @@
-do people in USA speak russian?
+do people in USA speak russian?:closed_q_reply
     store context
     what language do people speak in USA?
     compare

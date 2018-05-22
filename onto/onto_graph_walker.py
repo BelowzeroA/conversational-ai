@@ -3,9 +3,9 @@ from helpers.question_parser import QuestionParser
 from helpers.reply_composer import ReplyComposer
 
 
-class GraphWalker:
+class OntoGraphWalker:
 
-    def __init__(self, brain):
+    def __init__(self, brain, algorithm):
         self.brain = brain
         self.resolved = False
         self.current_tick = 0
@@ -14,6 +14,7 @@ class GraphWalker:
         self.broadcast_done = False
         self.node_to_signal = None
         self.input_nodes = []
+        self.algorithm = algorithm
 
 
     def resolve(self, input):
@@ -26,14 +27,7 @@ class GraphWalker:
         if self.train_mode:
             self.brain.working_memory.attach_subscriber(self._on_memory_write)
 
-        # self.fire_initial()
-
-        self.brain.algo_container.activate_first()
-
         self.run_loop()
-
-        reply_composer = ReplyComposer(brain=self.brain)
-        return reply_composer.reply_as_string()
 
 
     def _on_memory_write(self, node):
@@ -54,13 +48,6 @@ class GraphWalker:
     def update_state(self):
         self.current_tick += 1
         self.brain.current_tick = self.current_tick
-
-        algorithm_switched = self.brain.algo_container.update(self.current_tick)
-
-        if self.brain.algo_container.finished:
-            return
-        elif algorithm_switched:
-            self.reset_state(self.brain.algo_container.active_algorithm)
 
         self.current_tick += 1
         algorithm_switched = self.brain.algo_container.update(self.current_tick)

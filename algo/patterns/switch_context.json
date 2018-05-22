@@ -8,11 +8,6 @@
     },
     {
       "id": "2",
-      "type": "fire_initial",
-      "source": "stack"
-    },
-    {
-      "id": "3",
       "type": "exit"
     }
   ],
@@ -20,10 +15,6 @@
     {
       "source": "1",
       "target": "2"
-    },
-    {
-      "source": "2",
-      "target": "3"
     }
   ]
 }

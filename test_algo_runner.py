@@ -1,6 +1,6 @@
 from algo.algo_container import AlgoContainer
 from algo.core.algorithm import Algorithm
-from algo.graph_walker import GraphWalker
+from algo.algo_runner import AlgoRunner
 from algo.train.algo_composer import AlgoComposer
 from algo.train.estimator import Estimator
 from algo.build.algo_builder import AlgoBuilder
@@ -12,7 +12,6 @@ from onto.onto_container import OntoContainer
 
 def main():
     builder = OntoBuilder2()
-    # builder.build_knowledge_base('data/knowledge_base.txt')
     builder.build_facts('data/fact_base.txt')
     builder.store('data/knowledge_base.json')
 
@@ -20,10 +19,7 @@ def main():
     onto_container.load("data/knowledge_base.json")
     onto_container.build_secondary_connections()
 
-    algo1 = Algorithm(onto_container=onto_container, filename='algo/patterns/simple_connection.json')
-
     algo_container = AlgoContainer()
-    algo_container.add_algorithm(algo1)
 
     brain = Brain(onto_container=onto_container, algo_container=algo_container)
     estimator = Estimator(brain)
@@ -31,15 +27,23 @@ def main():
     algo_builder = AlgoBuilder(brain)
     algo_builder.build_from('data/algo_base.txt', './algo/patterns')
 
+    algo_container.add_algorithm(
+        Algorithm(onto_container=onto_container, filename='algo/patterns/closed_q_reply.json'))
+    algo_container.add_algorithm(
+        Algorithm(onto_container=onto_container, filename='algo/patterns/what_question_reply.json'))
+    algo_container.add_algorithm(
+        Algorithm(onto_container=onto_container, filename='algo/patterns/switch_context.json'))
+    algo_container.add_algorithm(
+        Algorithm(onto_container=onto_container, filename='algo/patterns/get_closest.json'))
+    algo_container.attach_to_brain(brain)
+
     # input = 'do people in a slavic speaking country speak english?'
     input = 'do people in a USA speak english?'
     # input = 'does USA have people?'
 
-    graph_walker = GraphWalker(brain=brain)
-    graph_walker.train_mode = True
-    result = graph_walker.resolve(input)
+    algo_runner = AlgoRunner(brain=brain)
+    result = algo_runner.run(input)
     print(result)
-    exit()
 
 
 if __name__ == '__main__':

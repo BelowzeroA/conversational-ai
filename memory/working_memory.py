@@ -42,15 +42,18 @@ class WorkingMemory:
             subscriber(node)
 
 
-    def push(self, num_cells):
-        cells_to_push = [cell for cell in self.cells if not cell.free and cell.captured]
-        num_pushed = 0
-        for cell in cells_to_push:
-            num_pushed += 1
-            self.stack.append(cell.node)
-            cell.captured = False
-            if num_pushed >= num_cells:
-                break
+    def push(self, num_cells=0, source='memory'):
+        if source == 'memory':
+            cells_to_push = [cell for cell in self.cells if not cell.free and cell.captured]
+            num_pushed = 0
+            for cell in cells_to_push:
+                num_pushed += 1
+                self.stack.append(cell.node)
+                cell.captured = False
+                if num_pushed >= num_cells:
+                    break
+        elif source == 'context':
+            self.stack.append(self.context)
 
 
     def attach_subscriber(self, function):

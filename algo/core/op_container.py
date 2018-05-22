@@ -5,6 +5,7 @@ from algo.core.op_exit import AlgoOperationExit
 from algo.core.op_listener import AlgoOperationListener
 from algo.core.op_signaller import AlgoOperationSignaller
 from algo.core.op_writer import AlgoOperationWriter
+from algo.core.op_call import AlgoOperationCall
 from memory.memory_events import MemoryEvent
 
 
@@ -25,22 +26,27 @@ class OperationContainer:
         for entry in self.entries['nodes']:
             op = None
             if entry['type'] == 'signaller':
-                op = AlgoOperationSignaller(id=entry['id'], algorithm=self.algorithm, num_cells=entry['num_cells'])
-                op.source = entry['source'] if 'source' in entry else 'memory'
+                op = AlgoOperationSignaller(id=entry['id'], algorithm=self.algorithm)
+                op.num_cells = OperationContainer.read_property(entry, 'num_cells', 0)
+                op.source = OperationContainer.read_property(entry, 'source', 'memory')
             elif entry['type'] == 'listener':
                 op = AlgoOperationListener(id=entry['id'], algorithm=self.algorithm, num_cells=entry['num_cells'])
-                op.filter = entry['filter'] if 'filter' in entry else None
-                op.connected_with = entry['connected_with'] if 'connected_with' in entry else None
-                op.is_ = entry['is'] if 'is' in entry else None
-                op.previously_unseen = entry['previously_unseen'] if 'previously_unseen' in entry else False
+                op.filter = OperationContainer.read_property(entry, 'filter', None)
+                op.connected_with = OperationContainer.read_property(entry, 'connected_with', None)
+                op.is_ = OperationContainer.read_property(entry, 'is', None)
+                op.previously_unseen = OperationContainer.read_property(entry, 'previously_unseen', False)
                 if entry['num_cells'] == 1:
                     op.event = MemoryEvent.One
                 elif entry['num_cells'] == 2:
                     op.event = MemoryEvent.Two
             elif entry['type'] == 'writer':
-                op = AlgoOperationWriter(id=entry['id'], algorithm=self.algorithm, num_cells=entry['num_cells'])
+                op = AlgoOperationWriter(id=entry['id'], algorithm=self.algorithm)
+                op.num_cells = OperationContainer.read_property(entry, 'num_cells', 0)
+                op.source = OperationContainer.read_property(entry, 'source', 'memory')
             elif entry['type'] == 'exit':
                 op = AlgoOperationExit(id=entry['id'], algorithm=self.algorithm)
+            elif entry['type'] == 'call':
+                op = AlgoOperationCall(id=entry['id'], algorithm=self.algorithm, called_algo=entry['algo'])
             if op:
                 self.operations.append(op)
 
@@ -50,6 +56,13 @@ class OperationContainer:
             connection = OperationConnection(source=source_node, target=target_node)
             self.connections.append(connection)
 
+
+    @staticmethod
+    def read_property(entry, property_name, default_value):
+        if property_name in entry:
+            return entry[property_name]
+        else:
+            return default_value
 
     def get_node_by_id(self, id):
         ops = [op for op in self.operations if op.node_id == id]

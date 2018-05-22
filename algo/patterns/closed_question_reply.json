@@ -4,7 +4,7 @@
     {
       "id": "1",
       "type": "writer",
-      "value": "context"
+      "source": "context"
     },
     {
       "id": "2",
@@ -14,7 +14,7 @@
     {
       "id": "3",
       "type": "call",
-      "algo": "get_reply_what"
+      "algo": "what_question_reply"
     },
     {
       "id": "4",

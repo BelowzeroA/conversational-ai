@@ -21,6 +21,10 @@ class AlgoContainer:
         self.active_algorithm.start(1)
 
 
+    def get_algo_by_name(self, name):
+        return [algo for algo in self.algorithms if algo.name == name][0]
+
+
     def update(self, tick):
         algorithm_switched = False
         if self.is_finished():
