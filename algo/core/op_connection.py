@@ -12,5 +12,7 @@ class OperationConnection:
 
     def update(self):
         if self.pulsing:
+            if self.target is None:
+                print(self, 'has no target')
             self.target.potential += self.weight
             self.pulsing = False

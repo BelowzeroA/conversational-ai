@@ -4,6 +4,8 @@ from onto.node import Node
 
 class Connection:
 
+    initial_pulsing_tick = -999
+
     def __init__(self, source: Node, target: Node, container):
         self.source = source
         self.target = target
@@ -12,7 +14,7 @@ class Connection:
         self.container = container
         self.pulsing = False
         self.potential = 0
-        self.last_pulsing_tick = -999
+        self.last_pulsing_tick = Connection.initial_pulsing_tick
         self.secondary = False
 
 
@@ -23,12 +25,18 @@ class Connection:
                 Brain.default_primary_connection_weight
             potentiation = self.weight * weight_coefficient
             if self.potential >= Brain.control_signal_potential:
-                potentiation = self.weight * weight_coefficient * self.potential / 2
+                potentiation = self.weight * weight_coefficient * self.potential
 
             self.target.potential += potentiation # self.potential
             self.target.contributors.append('{}: {}'.format(self.source.node_id, potentiation))
         self.pulsing = False
         self.potential = 0
+
+
+    def reset(self):
+        self.potential = 0
+        self.pulsing = False
+        self.last_pulsing_tick = Connection.initial_pulsing_tick
 
 
     def _repr(self):

@@ -7,7 +7,13 @@ class ReplyComposer:
 
 
     def reply_as_string(self):
-        return 'a stub for Timofey to run it'
+        reply_value = self.brain.working_memory.stack.pop()
+        if type(reply_value) is bool:
+            return 'yes' if reply_value else 'no'
+        else:
+            captured_cells = self.brain.working_memory.captured_cells_content()
+            return captured_cells[0].pattern
+
         reply_type = self.brain.algo_container.active_algorithm.reply_type
         captured_cells = self.brain.working_memory.captured_cells_content()
         if self.brain.algo_container.finished:

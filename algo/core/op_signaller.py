@@ -8,6 +8,7 @@ class AlgoOperationSignaller(AlgoOperation):
         self.num_cells = num_cells
         self.fired = False
         self.source = 'memory'
+        self.signalled_potential = 1
 
 
     def update(self):
@@ -15,7 +16,10 @@ class AlgoOperationSignaller(AlgoOperation):
         if self.firing:
             self.firing = False
             if not self.fired:
-                self.algorithm.brain.working_memory.broadcast(self.num_cells, source=self.source)
-                self.algorithm.onto_processing_needed = True
-                print('signaller {} fired'.format(self.node_id))
+                self.algorithm.brain.working_memory.broadcast(
+                    self.num_cells,
+                    source=self.source,
+                    potential=self.signalled_potential)
+                self.algorithm.awaiting = True
+                # print('signaller {} fired'.format(self.node_id))
             self.fired = True

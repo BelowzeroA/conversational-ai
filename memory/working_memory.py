@@ -16,6 +16,7 @@ class WorkingMemory:
         self.context = None
         self.cells: List[WorkingMemoryCell] = []
         self.stack: List = []
+        self.input_nodes: List = []
         self.write_counter = {}
         self.support_context = False
         for i in range(memory_limit):
@@ -35,6 +36,15 @@ class WorkingMemory:
                 else:
                     self.write_counter[node] = 1
                 break
+
+
+    def reset_memory(self):
+        for cell in self.cells:
+            cell.free = True
+
+
+    def is_node_initial(self, node):
+        return node in self.input_nodes or node == self.context
 
 
     def notify_subscribers(self, node):
@@ -78,28 +88,66 @@ class WorkingMemory:
                 operation.fire_if_conditions(wm_context)
 
 
-    def broadcast(self, num_cells, source):
-        done_cells = 0
+    def broadcast(self, num_cells, source, potential):
         if source == 'stack':
-            if len(self.stack) < num_cells:
-                return
-            for i in range(num_cells):
-                self.broadcast_node(self.stack.pop())
+            self._broadcast_from_stack(num_cells, potential)
+        elif source == 'initial':
+            self._broadcast_from_initial(potential)
         else:
-            max_charge = max(self.cells, key=lambda c: c.charge).charge
-            cells_to_broadcast = [cell for cell in self.cells if not cell.free and cell.captured]
-            for cell in cells_to_broadcast:
-                cell.captured = False
-                self.broadcast_node(cell.node)
-                done_cells += 1
-                if done_cells == num_cells:
-                    break
+            self._broadcast_from_memory(potential)
 
 
-    def broadcast_node(self, node):
-        node.potential += self.brain.control_signal_potential
+    def _broadcast_from_stack(self, num_cells, potential):
+        assert len(self.stack) >= num_cells, 'Not enough stack to broadcast'
+        for i in range(num_cells):
+            self.broadcast_node(self.stack.pop(), potential)
+
+
+    def _broadcast_from_initial(self, potential):
+        for node in self.input_nodes:
+            self.broadcast_node(node, potential)
+        self.broadcast_node(self.context, potential)
+
+
+    def _captured_cells(self):
+        return [cell for cell in self.cells if not cell.free and cell.captured]
+
+
+    def _broadcast_from_memory(self, potential):
+        done_cells = 0
+        cells_to_broadcast = self._captured_cells()
+        for cell in cells_to_broadcast:
+            cell.captured = False
+            self.broadcast_node(cell.node, potential)
+            done_cells += 1
+            if done_cells == num_cells:
+                break
+
+
+    def broadcast_node(self, node, potential):
+        node.potential += potential
+        node.initial = True
         node.fire()
         node.firing_period = self.brain.control_signal_period
+
+
+    def exchange_context(self):
+        node = self.stack.pop()
+        self.stack.append(self.context)
+        # idx = self.input_nodes.index(self.context)
+        # self.input_nodes[idx] = node
+        self.context = node
+
+
+    def compare_stack_with_captured(self):
+        captured = self._captured_cells()
+        if captured:
+            node1 = captured[0].node
+            node2 = self.stack.pop()
+            if node1 == node2:
+                self.stack.append(True)
+                return
+        self.stack.append(False)
 
 
     def active_cells_content(self):

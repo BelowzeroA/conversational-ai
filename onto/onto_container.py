@@ -27,7 +27,15 @@ class OntoContainer:
             source_node = self.get_node_by_id(entry['source'])
             target_node = self.get_node_by_id(entry['target'])
             connection = Connection(source=source_node, target=target_node, container=self)
+            connection.weight = entry['weight']
             self.connections.append(connection)
+
+
+    def reset(self):
+        for node in self.nodes:
+            node.reset()
+        for connection in self.connections:
+            connection.reset()
 
 
     def next_node_id(self):

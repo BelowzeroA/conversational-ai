@@ -4,8 +4,9 @@ from algo.core.op_connection import OperationConnection
 from algo.core.op_exit import AlgoOperationExit
 from algo.core.op_listener import AlgoOperationListener
 from algo.core.op_signaller import AlgoOperationSignaller
-from algo.core.op_writer import AlgoOperationWriter
+from algo.core.op_memory import AlgoOperationMemory
 from algo.core.op_call import AlgoOperationCall
+from algo.core.op_compare import AlgoOperationCompare
 from memory.memory_events import MemoryEvent
 
 
@@ -27,6 +28,7 @@ class OperationContainer:
             op = None
             if entry['type'] == 'signaller':
                 op = AlgoOperationSignaller(id=entry['id'], algorithm=self.algorithm)
+                op.signalled_potential = OperationContainer.read_property(entry, 'potential', 1)
                 op.num_cells = OperationContainer.read_property(entry, 'num_cells', 0)
                 op.source = OperationContainer.read_property(entry, 'source', 'memory')
             elif entry['type'] == 'listener':
@@ -39,10 +41,13 @@ class OperationContainer:
                     op.event = MemoryEvent.One
                 elif entry['num_cells'] == 2:
                     op.event = MemoryEvent.Two
-            elif entry['type'] == 'writer':
-                op = AlgoOperationWriter(id=entry['id'], algorithm=self.algorithm)
+            elif entry['type'] == 'memory':
+                op = AlgoOperationMemory(id=entry['id'], algorithm=self.algorithm)
                 op.num_cells = OperationContainer.read_property(entry, 'num_cells', 0)
                 op.source = OperationContainer.read_property(entry, 'source', 'memory')
+                op.operation = OperationContainer.read_property(entry, 'operation', 'write')
+            elif entry['type'] == 'compare':
+                op = AlgoOperationCompare(id=entry['id'], algorithm=self.algorithm)
             elif entry['type'] == 'exit':
                 op = AlgoOperationExit(id=entry['id'], algorithm=self.algorithm)
             elif entry['type'] == 'call':

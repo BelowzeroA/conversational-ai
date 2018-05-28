@@ -4,6 +4,7 @@
     {
       "id": "1",
       "type": "signaller",
+      "potential": 3,
       "source": "stack",
       "num_cells": 1
     },
@@ -15,7 +16,8 @@
     },
     {
       "id": "3",
-      "type": "writer"
+      "type": "memory",
+      "operation": "write"
     },
     {
       "id": "4",

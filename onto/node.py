@@ -9,7 +9,6 @@ class Node:
         self.node_id = id
         self.pattern = pattern
         self.firing = False
-        self.initial = False
         self.threshold = Brain.default_node_threshold
         self._potential = 0
         self.abstract = abstract
@@ -20,6 +19,9 @@ class Node:
         self.initial_potential_period = Node.initial_potential_period
         self.contributors = []
 
+    @property
+    def is_initial(self):
+        return self.container.brain.working_memory.is_node_initial(self)
 
     @property
     def potential(self):
@@ -31,15 +33,16 @@ class Node:
         self._potential = value
 
 
+    def reset(self):
+        self._potential = 0
+        self.firing = False
+
+
     def fire(self):
         self.last_firing_tick = self.container.brain.current_tick
         self.firing = True
         if self.potential == 0:
             self.potential = 1
-        # incoming_connections = self.container.get_incoming_connections(self)
-        # for conn in incoming_connections:
-        #     if conn.pulsing:
-        #         conn.upgrade_weight()
 
 
     def update(self):
@@ -50,7 +53,7 @@ class Node:
         self.contributors.clear()
 
         ticks_since_last_firing = self.container.brain.current_tick - self.last_firing_tick
-        keep_firing = self.initial and ticks_since_last_firing <= self.initial_potential_period
+        keep_firing = self.is_initial and ticks_since_last_firing <= self.initial_potential_period
         keep_firing |= ticks_since_last_firing < self.firing_period
 
         # leak
@@ -61,27 +64,32 @@ class Node:
 
         potential_spent = False
         if self.firing:
-            current_tick = self.container.brain.current_tick
-            connections = self.container.get_outgoing_connections(self)
-            if connections:
-                max_weight = max(connections, key=lambda c: c.weight).weight
-                for connection in connections:
-                    if connection.weight == max_weight:
-                        counter_connection = self.container.get_connection_between_nodes(
-                            source=connection.target, target=connection.source)
-                        if counter_connection and counter_connection.last_pulsing_tick > current_tick - 10:
-                            continue
-                        connection.pulsing = True
-                        connection.potential = self.potential
-                        potential_spent = True
+            potential_spent = self.pulse_outgoing_connections()
 
-        if self.potential > Brain.default_node_threshold and self.firing and not self.initial:
+        if self.potential > Brain.default_node_threshold and self.firing and not self.is_initial:
             self.container.brain.working_memory.write(self)
-            self.potential = 0
+            # self.potential = 0
 
         if potential_spent and not keep_firing:
             self.potential = 0
             self.firing = False
+
+
+    def pulse_outgoing_connections(self):
+        current_tick = self.container.brain.current_tick
+        connections = self.container.get_outgoing_connections(self)
+        if connections:
+            max_weight = max(connections, key=lambda c: c.weight).weight
+            for connection in connections:
+                if connection.weight <= max_weight:
+                    counter_connection = self.container.get_connection_between_nodes(
+                        source=connection.target, target=connection.source)
+                    if counter_connection and counter_connection.last_pulsing_tick > current_tick - 10:
+                        continue
+                    connection.pulsing = True
+                    connection.potential = self.potential
+                    potential_spent = True
+        return potential_spent
 
 
     def _repr(self):

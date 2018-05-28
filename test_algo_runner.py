@@ -40,10 +40,10 @@ def main():
     # input = 'do people in a slavic speaking country speak english?'
     input = 'do people in a USA speak english?'
     # input = 'does USA have people?'
-
+    print('query:', input)
     algo_runner = AlgoRunner(brain=brain)
-    result = algo_runner.run(input)
-    print(result)
+    result = algo_runner.run(input, verbose=False)
+    print('result:', result)
 
 
 if __name__ == '__main__':

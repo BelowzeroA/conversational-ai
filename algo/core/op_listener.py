@@ -19,6 +19,11 @@ class AlgoOperationListener(AlgoOperation):
             self.firing = False
 
 
+    def fire(self):
+        super(AlgoOperationListener, self).fire()
+        self.algorithm.awaiting = False
+
+
     def fire_if_conditions(self, wm_context):
         if self.filter:
             if self.filter == 'abstract' and not wm_context['abstract']:
@@ -35,7 +40,7 @@ class AlgoOperationListener(AlgoOperation):
                     cell.captured = True
                     break
 
-        if self.connected_with:
+        elif self.connected_with:
             for cell in attention_cells:
                 if self.previously_unseen and wm_context['write_counter'][cell.node] > 1:
                     continue
@@ -45,6 +50,9 @@ class AlgoOperationListener(AlgoOperation):
                     cells_to_capture.append(cell)
                     if len(cells_to_capture) == self.num_cells:
                         break
+        else:
+            cells_to_capture = attention_cells
+
         if len(cells_to_capture) == self.num_cells:
             for cell in cells_to_capture:
                 cell.captured = True

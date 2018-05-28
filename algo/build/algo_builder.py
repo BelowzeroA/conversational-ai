@@ -51,7 +51,7 @@ class AlgoBuilder:
 
 
     def _op_store(self, terms):
-        op = self._make_op_struct('writer')
+        op = self._make_op_struct('memory')
         op['source'] = terms[1]
         return op
 
@@ -84,7 +84,7 @@ class AlgoBuilder:
 
     def _make_connections(self, ops):
         connections = []
-        for i in range(1, len(ops) - 1):
+        for i in range(1, len(ops)):
             connections.append({'source': str(i), 'target': str(i + 1)})
         return connections
 

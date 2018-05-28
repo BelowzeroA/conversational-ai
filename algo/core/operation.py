@@ -12,7 +12,8 @@ class AlgoOperation:
 
     def fire(self):
         self.firing = True
-        print('operation {} firing'.format(self.node_id))
+        if self.algorithm.brain.verbose:
+            print('{}: operation {} firing'.format(self.algorithm.name, self.node_id))
 
 
     def update(self):

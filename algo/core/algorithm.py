@@ -14,6 +14,7 @@ class Algorithm:
             self.container.load(filename)
             self.name = os.path.splitext(ntpath.basename(filename))[0]
         self.onto_container = onto_container
+        self.brain = self.onto_container.brain
         self.active = False
         self.finished = False
         self.time_exceeded = False
@@ -25,8 +26,8 @@ class Algorithm:
         self.next = None
         self.switching_to = None
         self.callback = None
-        self.onto_processing_needed = False
-        self.graph_walker = OntoGraphWalker(self.onto_container.brain, self)
+        self.awaiting = False
+        self.graph_walker = OntoGraphWalker(self.brain, self)
 
 
     def read_property(self, property_name, default_value):
@@ -40,6 +41,8 @@ class Algorithm:
         self.start_tick = tick
         self.current_tick = tick
         self.active = True
+        self.onto_container.reset()
+        self.brain.working_memory.reset_memory()
         self.container.operations[0].fire()
 
 
@@ -60,8 +63,13 @@ class Algorithm:
                 self.active = False
                 self.callback(self.switching_to)
 
-            if self.onto_processing_needed:
+            if self.awaiting:
                 self.graph_walker.make_step(self.current_tick)
+
+
+    def regain_execution(self):
+        self.switching_to = None
+        self.active = True
 
 
     def init_onto_nodes(self):

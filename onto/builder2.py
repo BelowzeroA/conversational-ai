@@ -2,12 +2,11 @@ import json
 import string
 from collections import Counter
 
+from brain.brain import Brain
 from onto.builder import OntoEncoder
 from onto.connection import Connection
 from onto.node import Node
 from onto.onto_container import OntoContainer
-
-minimal_weight = 0.25
 
 
 class OntoBuilder2:
@@ -124,7 +123,7 @@ class OntoBuilder2:
                 nodes.remove(node2)
 
         # connect source nodes to a newly created abstract node
-        weight = min(1.0, num_times * minimal_weight)
+        weight = min(1.0, num_times * Brain.minimal_connection_weight)
 
         self._add_bidirect_connections(node1, combined_node, weight)
         self._add_bidirect_connections(node2, combined_node, weight)
@@ -189,7 +188,7 @@ class OntoBuilder2:
         if len(nodes) > 2:
             raise Exception('cannot handle more than 2 nodes in _build_simple_connection()')
 
-        self._add_bidirect_connections(nodes[0], nodes[1], minimal_weight)
+        self._add_bidirect_connections(nodes[0], nodes[1], Brain.maximal_connection_weight)
 
 
     def _build_fact(self, nodes):
@@ -197,7 +196,7 @@ class OntoBuilder2:
         fact_node.knowledge_center = True
         self.container.nodes.append(fact_node)
         for node in nodes:
-            self._add_bidirect_connections(fact_node, node, minimal_weight)
+            self._add_bidirect_connections(fact_node, node, Brain.minimal_connection_weight)
         return fact_node
 
 
